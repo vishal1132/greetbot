@@ -1,0 +1,9 @@
+# github.com/rs/zerolog v1.19.0
+## explicit
+github.com/rs/zerolog
+github.com/rs/zerolog/internal/cbor
+github.com/rs/zerolog/internal/json
+# github.com/valyala/fastjson v1.5.4
+## explicit
+github.com/valyala/fastjson
+github.com/valyala/fastjson/fastfloat
