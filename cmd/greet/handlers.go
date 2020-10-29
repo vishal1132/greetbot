@@ -178,6 +178,35 @@ func (s *handler) handleSlackEvent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	event := document.Get("event")
-	log.Println("eventttt  ", event)
+	logger.Info().Str("", "").Msg("")
+	err = processFurther(event, logger)
+	if err != nil {
+		logger.
+			Err(err).
+			Msg("Failed to process the event")
+	}
+}
 
+func handleMentionEvents(event *fastjson.Value) {
+	blocks, err := event.Get("blocks").Array()
+	if err != nil {
+		log.Println("logging error ", err)
+	}
+	elements, err := blocks[0].Get("elements").Array()
+	elements, err = elements[0].Get("elements").Array()
+	text, err := getJSONString(elements[1], "text")
+	log.Println(text, err)
+}
+
+func processFurther(event *fastjson.Value, logger zerolog.Logger) error {
+	eventType, err := getJSONString(event, "")
+	if err != nil {
+		logger.Err(err).Msg("Error getting event type")
+		return err
+	}
+	switch eventType {
+	case "app_mention":
+		handleMentionEvents(event)
+	}
+	return nil
 }
